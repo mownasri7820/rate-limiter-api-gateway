@@ -1,0 +1,42 @@
+{
+  "info": {
+    "name": "GUVI - Rate Limiter + API Gateway",
+    "description": "Course project API checks. Set baseUrl and run Login first; the access token is saved automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8080"},
+    {"key": "token", "value": ""}
+  ],
+  "item": [
+    {
+      "name": "1 - Authentication",
+      "item": [
+        {
+          "name": "Login - get JWT",
+          "event": [{"listen": "test", "script": {"exec": ["pm.test('Login returns 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.collectionVariables.set('token', body.accessToken);"]}}],
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"username\": \"{{demoUsername}}\",\n  \"password\": \"{{demoPassword}}\"\n}", "options": {"raw": {"language": "json"}}}, "url": "{{baseUrl}}/auth/login"}
+        }
+      ]
+    },
+    {
+      "name": "2 - Gateway routes (JWT required)",
+      "item": [
+        {"name": "Get users", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/gateway/users"}},
+        {"name": "Get user by ID", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/gateway/users/1"}},
+        {"name": "Get products", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/gateway/products"}},
+        {"name": "Get orders", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/gateway/orders"}},
+        {"name": "Create order", "request": {"method": "POST", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"productId\": 101,\n  \"quantity\": 2\n}", "options": {"raw": {"language": "json"}}}, "url": "{{baseUrl}}/gateway/orders"}}
+      ]
+    },
+    {
+      "name": "3 - Error and monitoring checks",
+      "item": [
+        {"name": "Gateway without token - expect 401", "request": {"method": "GET", "url": "{{baseUrl}}/gateway/products"}},
+        {"name": "Recent API logs", "request": {"method": "GET", "url": "{{baseUrl}}/monitoring/logs"}},
+        {"name": "Monitoring statistics", "request": {"method": "GET", "url": "{{baseUrl}}/monitoring/stats"}},
+        {"name": "Health check", "request": {"method": "GET", "url": "{{baseUrl}}/actuator/health"}}
+      ]
+    }
+  ]
+}

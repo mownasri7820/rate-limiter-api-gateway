@@ -1,0 +1,33 @@
+server:
+  port: ${SERVER_PORT:8081}
+spring:
+  application:
+    name: rate-limiter-api-gateway
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/gatewaydb}
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: never
+app:
+  jwt:
+    secret: ${JWT_SECRET:local-development-secret-key-change-this-123456}
+    expiration-minutes: 60
+  demo:
+    username: ${DEMO_USERNAME:demo}
+    password: ${DEMO_PASSWORD:demo123}
+  rate-limit:
+    capacity: ${RATE_LIMIT_CAPACITY:100}
+    refill-tokens: ${RATE_LIMIT_REFILL_TOKENS:100}
+    refill-seconds: ${RATE_LIMIT_REFILL_SECONDS:60}
+  routing:
+  # Internal demo endpoints are hosted in this same application.
+    base-url: ${BACKEND_BASE_URL:http://localhost:${server.port}}
