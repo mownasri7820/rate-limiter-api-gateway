@@ -64,7 +64,7 @@ Other examples:
 - `POST /gateway/orders` with JSON body `{"productId":101,"quantity":2}`
 
 ### 3. Rate-limit test
-With the default capacity of 10, send more than 10 gateway requests quickly using the same token. The request exceeding available tokens returns `429 Too Many Requests`. Change capacity/refill settings with environment variables.
+With the default capacity of 100, send more than 10 gateway requests quickly using the same token. The request exceeding available tokens returns `429 Too Many Requests`. Change capacity/refill settings with environment variables.
 
 ### 4. Monitoring
 - `GET /monitoring/logs` – latest 100 gateway request logs.
