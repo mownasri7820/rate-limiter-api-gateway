@@ -2,10 +2,15 @@
 
 A learning project for the GUVI SDE AI with MongoDB course. It demonstrates a centralized Spring Boot API gateway with JWT authentication, a per-user Token Bucket rate limiter, backend routing, and MongoDB request monitoring.
 
+## Live Deployment
+- **Base URL:** https://rate-limiter-api-gateway.onrender.com
+- **Swagger UI:** https://rate-limiter-api-gateway.onrender.com/swagger-ui/index.html
+- **Health Check:** https://rate-limiter-api-gateway.onrender.com/actuator/health
+
 ## Features
 - `POST /auth/login` issues a signed JWT for the configured demo user.
 - `/gateway/**` is the single protected entry point. Requests require `Authorization: Bearer <token>`.
-- Token Bucket rate limiting is applied per authenticated username. Defaults: capacity 10, refill 10 tokens every 60 seconds.
+- Token Bucket rate limiting is applied per authenticated username. Defaults: capacity 10, refill 100 tokens every 60 seconds.
 - Exceeded requests return HTTP `429` and a `Retry-After` header. Missing/invalid tokens return HTTP `401`.
 - Gateway requests are logged to MongoDB collection `api_logs`.
 - Demo backend routes: users, products, orders.
