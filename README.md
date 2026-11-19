@@ -10,7 +10,7 @@ A learning project for the GUVI SDE AI with MongoDB course. It demonstrates a ce
 ## Features
 - `POST /auth/login` issues a signed JWT for the configured demo user.
 - `/gateway/**` is the single protected entry point. Requests require `Authorization: Bearer <token>`.
-- Token Bucket rate limiting is applied per authenticated username. Defaults: capacity 10, refill 100 tokens every 60 seconds.
+- Token Bucket rate limiting is applied per authenticated username. Defaults: capacity 100, refill 100 tokens every 60 seconds.
 - Exceeded requests return HTTP `429` and a `Retry-After` header. Missing/invalid tokens return HTTP `401`.
 - Gateway requests are logged to MongoDB collection `api_logs`.
 - Demo backend routes: users, products, orders.
